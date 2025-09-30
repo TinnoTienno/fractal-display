@@ -3,7 +3,7 @@ CC = cc
 
 EXE = project
 IMGUI_DIR = imgui
-SOURCES = src/main.cpp src/glad.c
+SOURCES = src/main.cpp src/glad.c src/myApp.cpp
 SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
 OBJS_DIR = obj
@@ -11,7 +11,7 @@ OBJS = $(addprefix $(OBJS_DIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
-CXXFLAGS = -std=c++20 -Isrc -Iinc -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -DNAME=$(EXE)
+CXXFLAGS = -std=c++20 -Isrc -Iinc -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -DNAME=\"$(EXE)\"
 CXXFLAGS += -g -Wall -Wformat
 CFLAGS = -Isrc -Iinc -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends
 CFLAGS += -g -Wall -Wformat
@@ -48,6 +48,7 @@ ifeq ($(OS), Windows_NT)
 	CFLAGS += `pkg-config --cflags glfw3`
 endif
 
+CFLAGS += -DNAME=\"$(EXE)\"
 ##---------------------------------------------------------------------
 ## BUILD RULES
 ##---------------------------------------------------------------------
@@ -70,12 +71,16 @@ $(OBJS_DIR)/%.o: $(IMGUI_DIR)/backends/%.cpp
 
 all: $(EXE)
 	@echo Build complete for $(ECHO_MESSAGE)
+	@./project
 
 $(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
 
 clean:
 	rm -f $(EXE) $(OBJS)
+	rm -f imgui.ini
 	rm -rf $(OBJS_DIR)
+
+re : clean all
 
 
