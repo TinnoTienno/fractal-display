@@ -1160,6 +1160,7 @@ IMPLEMENTING SUPPORT for ImGuiBackendFlags_RendererHasTextures:
 // System includes
 #include <stdio.h>      // vsnprintf, sscanf, printf
 #include <stdint.h>     // intptr_t
+#include <iostream>
 
 // [Windows] On non-Visual Studio compilers, we default to IMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCTIONS unless explicitly enabled
 #if defined(_WIN32) && !defined(_MSC_VER) && !defined(IMGUI_ENABLE_WIN32_DEFAULT_IME_FUNCTIONS) && !defined(IMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCTIONS)
@@ -8935,6 +8936,9 @@ void ImGui::SetWindowPos(const char* name, const ImVec2& pos, ImGuiCond cond)
 {
     if (ImGuiWindow* window = FindWindowByName(name))
         SetWindowPos(window, pos, cond);
+    else
+        std::cout << name << std::endl;
+
 }
 
 ImVec2 ImGui::GetWindowSize()
